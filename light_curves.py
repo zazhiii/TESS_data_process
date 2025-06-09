@@ -27,8 +27,6 @@ def get_light_curve(fits_file_paths: list,
     for path in tqdm(fits_file_paths, desc="从 FITS 文件中提取每个星的光度", unit="file", colour="green"):
 
         image_data, header = file_utils.read_image_data(path)
-        clip_image_data = file_utils.fixed_clip_image_data(image_data, 100, 400)
-
         time.append(header['TSTART'])  # 假设 TSTART 存在于头信息中
 
         # 计算每个星点在当前图像中的光度
@@ -36,7 +34,7 @@ def get_light_curve(fits_file_paths: list,
         for x, y in zip(source['xcentroid'], source['ycentroid']):
             half = box_size // 2
             # 计算指定位置的光度
-            sub_image = clip_image_data[int(y - half):int(y + half + 1), int(x - half):int(x + half + 1)]
+            sub_image = image_data[int(y - half):int(y + half + 1), int(x - half):int(x + half + 1)]
             flux = np.sum(sub_image)
             fluxes[i].append(flux)
             i += 1
@@ -53,28 +51,17 @@ if __name__ == '__main__':
     fits_file_paths = fits_file_paths[49:146] + fits_file_paths[147:]
     print(f'读取到 {len(fits_file_paths)} 个 FITS 文件')
 
-    # 找到目标星点
+    # 找星
     FILE_NUM = 0
     image_data, header = file_utils.read_image_data(fits_file_paths[FILE_NUM])
-    clip_image_data = file_utils.fixed_clip_image_data(image_data, 100, 400)
+    clip_image_data = file_utils.stats_clip_image_data(image_data)
     source = find_star(clip_image_data)
     print(f'找到 {len(source)} 个星点')
 
     BOX_SIZE = 7  # 方形区域大小
     fluxes, time = get_light_curve(fits_file_paths, source, BOX_SIZE)
 
-    stds = [np.std(f) for f in fluxes]
-    # 排序返回光度标准差从高到低的索引
-    top_indices = np.argsort(stds)[::-1]
-    print(f'光度标准差从高到低的前 10 个星点索引: {top_indices[:10]}')
-
-    # 绘制 10 个光度曲线在一个图中
-    plt.figure(figsize=(12, 6))
-    for i in top_indices[:20]:
-        plt.plot(time, fluxes[i], label=f'Star {i+1}')
-    plt.xlabel('Time (BTJD)')
-    plt.ylabel('Flux')
-    plt.title('Light Curves of Top Stars')
-    plt.legend()
-    plt.show()
+    # 保存到 npy 文件
+    np.save('result/light_curves/fluxes.npy', fluxes)
+    np.save('result/light_curves/time.npy', time)
 

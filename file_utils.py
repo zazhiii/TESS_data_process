@@ -23,6 +23,12 @@ def read_image_data(fit_file_path: str) -> tuple[np.ndarray, dict]:
 def fixed_clip_image_data(image_data: np.ndarray, a_min: float = 100, a_max: float = 400) -> np.ndarray:
     return np.clip(image_data, a_min=a_min, a_max=a_max)
 
+def stats_clip_image_data(image_data: np.ndarray, sigma: float = 3.0) -> np.ndarray:
+    mean, median, std = sigma_clipped_stats(image_data, sigma=sigma)
+    vmin = median - 1 * std
+    vmax = median + 5 * std
+    return np.clip(image_data, vmin, vmax)
+
 def clip_image_data(image_data: np.ndarray) -> tuple:
     clip_image_fixed = np.clip(image_data, a_min=100, a_max=400)
 

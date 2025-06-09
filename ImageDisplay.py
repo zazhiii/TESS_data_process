@@ -1,19 +1,21 @@
 import matplotlib.pyplot as plt
 import file_utils
+import numpy as np
 
 # 文件列表
 folder = "data/"
 fits_file_names = file_utils.get_fits_file_names(folder)
 
 # 提取图像数据
-FILE_NUM = 146 # 选择要处理的文件编号
-image_data = file_utils.read_image_data(folder + fits_file_names[FILE_NUM])
+# FILE_NUM = 146 # 选择要处理的文件编号
+FILE_NUM = 49  # 选择要处理的文件编号
+image_data, hdr = file_utils.read_image_data(folder + fits_file_names[FILE_NUM])
 
 # clip 过滤像素值
 image_data1, image_data2, image_data3 = file_utils.clip_image_data(image_data)
 
-# plt.imshow(image_data1)
-# plt.show()
+plt.imshow(image_data1)
+plt.show()
 
 # 手动调试固定值
 plt.figure(figsize=(12, 6))
