@@ -13,8 +13,8 @@ if __name__ == '__main__':
     os.makedirs(figures_dir, exist_ok=True)
 
     # 从 npy 文件加载光度曲线数据 allow_pickle=True 允许加载包含 Python 对象的数组
-    fluxes = np.load('result/light_curves/fluxes.npy', allow_pickle=True)
-    time = np.load('result/light_curves/time.npy', allow_pickle=True)
+    fluxes = np.load('result/light_curves/data/fluxes.npy', allow_pickle=True)
+    time = np.load('result/light_curves/data/time.npy', allow_pickle=True)
 
     feat_list = []
     i = 0
@@ -23,7 +23,7 @@ if __name__ == '__main__':
         ptp = np.ptp(flux) # 计算极差
         # 定义频率范围（单位是 cycles per day）
         min_period = 0.05 # 最小周期（day）
-        max_period = 10 # 最大周期（day）
+        max_period = 5 # 最大周期（day）
         frequency, power = LombScargle(time, flux).autopower(
             minimum_frequency = 1 / max_period,
             maximum_frequency = 1 / min_period,

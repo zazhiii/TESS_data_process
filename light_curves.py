@@ -54,14 +54,16 @@ if __name__ == '__main__':
     # 找星
     FILE_NUM = 0
     image_data, header = file_utils.read_image_data(fits_file_paths[FILE_NUM])
-    clip_image_data = file_utils.stats_clip_image_data(image_data)
-    source = find_star(clip_image_data)
+    # clip_image_data = file_utils.stats_clip_image_data(image_data)
+    # 保存 header
+    np.save('result/light_curves/data/header.npy', header)
+    source = find_star(image_data)
     print(f'找到 {len(source)} 个星点')
 
     BOX_SIZE = 7  # 方形区域大小
     fluxes, time = get_light_curve(fits_file_paths, source, BOX_SIZE)
 
     # 保存到 npy 文件
-    np.save('result/light_curves/fluxes.npy', fluxes)
-    np.save('result/light_curves/time.npy', time)
+    np.save('result/light_curves/data/fluxes.npy', fluxes)
+    np.save('result/light_curves/data/time.npy', time)
 

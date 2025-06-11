@@ -16,9 +16,9 @@ def read_image_data(fit_file_path: str) -> tuple[np.ndarray, dict]:
     with fits.open(fit_file_path) as hdulist:
         # 提取图像数据和头信息
         image_data = hdulist[1].data
-        hdr = hdulist[1].header
+        header = hdulist[1].header
         # 去除边框
-        return image_data[0:-45, 45:-45], hdr
+        return image_data[0:-45, 45:-45], header
 
 def fixed_clip_image_data(image_data: np.ndarray, a_min: float = 100, a_max: float = 400) -> np.ndarray:
     return np.clip(image_data, a_min=a_min, a_max=a_max)
