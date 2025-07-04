@@ -1,3 +1,12 @@
+# step
+
+识别位置 --> 保存 source 到 .npy 文件
+
+读取 npy 文件，计算光变曲线 --> 保存到 fluxes.npy
+
+
+
+
 
 # FITS 文件数据结构解析
 你运行 `hdulist.info()` 得到的信息如下：

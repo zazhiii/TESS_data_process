@@ -5,17 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da4e1b9e-d691-42d8-a429-5e51f9e1988f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/TESS_info.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FileUtils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FindStar.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ImageDisplay.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LightCurves.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc/data.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/find_little_star.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/get_diffs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classify_star.py" beforeDir="false" afterPath="$PROJECT_DIR$/classify_star.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cycle_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/cycle_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/data.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/data.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/file_utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/find_star.py" beforeDir="false" afterPath="$PROJECT_DIR$/find_star.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/light_curves.py" beforeDir="false" afterPath="$PROJECT_DIR$/light_curves.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +30,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;zazhiii&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:zazhiii/TESS_data_process.git&quot;,
+    &quot;accountId&quot;: &quot;50321fd9-e34b-49ee-b91a-6a521e15d1e0&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -43,18 +53,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Main.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/lixinhuan/code_py/TESS_info",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Main.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lixinhuan/code_py/TESS_info&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -115,8 +129,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
-        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-PY-251.26927.74" />
+        <option value="bundled-python-sdk-657d8234b839-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26927.74" />
       </set>
     </attachedChunks>
   </component>
@@ -129,6 +143,12 @@
       <option name="presentableId" value="Default" />
       <updated>1748913940253</updated>
       <workItem from="1749007342917" duration="129000" />
+      <workItem from="1750644223260" duration="197000" />
+      <workItem from="1751591297219" duration="966000" />
+      <workItem from="1751592461940" duration="33000" />
+      <workItem from="1751592499379" duration="15000" />
+      <workItem from="1751592515338" duration="90000" />
+      <workItem from="1751592628843" duration="10000" />
     </task>
     <servers />
   </component>

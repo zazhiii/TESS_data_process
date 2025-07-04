@@ -43,11 +43,15 @@ def clip_image_data(image_data: np.ndarray) -> tuple:
 
     return clip_image_fixed, clip_image_percentile, clip_image_statistics
 
+def get_fits_file_paths(folder: str) -> list:
+    names = get_fits_file_names(folder)
+    return [os.path.join(folder, name) for name in names]
+
 if __name__ == '__main__':
-    # 测试代码
-    folder = "data/"
-    fits_file_names = get_fits_file_names(folder)
-    img_data, hdr = read_image_data(folder + fits_file_names[0])
+
+    paths = get_fits_file_paths("data/")
+
+    img_data, hdr = read_image_data(paths[0])
 
     # print(hdr)
 

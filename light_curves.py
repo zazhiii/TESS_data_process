@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from astropy.stats import sigma_clipped_stats
+
 import file_utils
 import numpy as np
 from find_star import find_star
@@ -8,62 +10,54 @@ from astropy.timeseries import LombScargle
 
 def get_light_curve(fits_file_paths: list,
                     source: any,
-                    box_size: int = 7) -> tuple[list, list]:
-    """
-    从 FITS 文件中提取每个星点的光度曲线
-    :param fits_file_paths: 文件路径列表
-    :param source: 星点信息，通常是一个包含星点位置的 DataFrame 或类似结构
-    :param box_size: 用于计算光度的方形区域大小，默认为 7
-    :return: 光度曲线列表和时间列表
-    """
-
-    # 过滤 sharpness 太低 或 roundness1 太大的星点, TODO: 根据实际情况调整阈值
-    # filter_source = source[(source['sharpness'] > 0.2) & (np.abs(source['roundness1']) < 1.0)]
-    # print(f'过滤后剩余 {len(filter_source)} 个星点')
-
+                    box_size: int = 5) -> tuple:
     fluxes = [[] for _ in range(len(source))]
-    time = []
-
+    times = []
     for path in tqdm(fits_file_paths, desc="从 FITS 文件中提取每个星的光度", unit="file", colour="green"):
 
         image_data, header = file_utils.read_image_data(path)
-        time.append(header['TSTART'])  # 假设 TSTART 存在于头信息中
+        times.append(header['TSTART']) # 获取时间戳
 
+        # 使用中值滤波来减少噪声
+        image_data = median_filter(image_data, size=3)
+        # 计算图像的统计量
+        mean, median, std = sigma_clipped_stats(image_data, sigma=3.0)
         # 计算每个星点在当前图像中的光度
-        i = 0
-        for x, y in zip(source['xcentroid'], source['ycentroid']):
+        for i, (x, y) in enumerate(zip(source['xcentroid'], source['ycentroid'])):
             half = box_size // 2
             # 计算指定位置的光度
             sub_image = image_data[int(y - half):int(y + half + 1), int(x - half):int(x + half + 1)]
-            flux = np.sum(sub_image)
+            flux = np.sum(sub_image - median)  # 减去背景中值
             fluxes[i].append(flux)
-            i += 1
-
-    return fluxes, time
+    return fluxes, times
 
 if __name__ == '__main__':
-    # 获取文件路径列表
-    folder = "data/"
-    fits_file_names = file_utils.get_fits_file_names(folder)
-    fits_file_paths = [folder + name for name in fits_file_names]
 
-    # TODO: 先做第 50 张图（除第 147 张图）之后的处理，前面一部分图片有问题
-    fits_file_paths = fits_file_paths[49:146] + fits_file_paths[147:]
-    print(f'读取到 {len(fits_file_paths)} 个 FITS 文件')
+    paths = file_utils.get_fits_file_paths('data/')
 
-    # 找星
-    FILE_NUM = 0
-    image_data, header = file_utils.read_image_data(fits_file_paths[FILE_NUM])
-    # clip_image_data = file_utils.stats_clip_image_data(image_data)
-    # 保存 header
-    np.save('result/light_curves/data/header.npy', header)
-    source = find_star(image_data)
-    print(f'找到 {len(source)} 个星点')
+    # 去除前 25 张图像
+    paths = paths[25:]
+    print(f'读取到 {len(paths)} 个 FITS 文件')
 
-    BOX_SIZE = 7  # 方形区域大小
-    fluxes, time = get_light_curve(fits_file_paths, source, BOX_SIZE)
+    sc = np.load('result/find_star/source_fixed.npy', allow_pickle=True)
+    print(f'读取到 {len(sc)} 个星点数据')
 
-    # 保存到 npy 文件
-    np.save('result/light_curves/data/fluxes.npy', fluxes)
-    np.save('result/light_curves/data/time.npy', time)
+    fs, ts = get_light_curve(paths, sc)
+
+    # 索引 121 位置处异常
+    for f in fs:
+        f[121] = (f[120] + f[122]) / 2  # 简单插值修正
+
+    np.save('result/light_curves/data/fluxes.npy', fs)
+    np.save('result/light_curves/data/times.npy', ts)
+
+    # for flux in fs:
+    #     plt.figure(figsize=(10, 5))
+    #     plt.plot(flux, label='Star 0', color='blue')
+    #     plt.title('Light Curve of Star 0')
+    #     plt.xlabel('Time (days)')
+    #     plt.ylabel('Flux')
+    #     plt.grid()
+    #     plt.legend()
+    #     plt.show()
 

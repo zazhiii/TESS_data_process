@@ -1,6 +1,8 @@
 from photutils.detection import DAOStarFinder
 from astropy.stats import sigma_clipped_stats
 import numpy as np
+
+import file_utils
 import json
 
 def find_star(image_data, fwhm=3.0, threshold_factor=5.0) -> np.ndarray:
@@ -11,16 +13,12 @@ def find_star(image_data, fwhm=3.0, threshold_factor=5.0) -> np.ndarray:
     # 使用背景减去中位数来提高星点检测的准确性
     return daofind(image_data - median)
 
-
 if __name__ == '__main__':
-    print('正在查找星点...')
-    import file_utils
-    # 文件列表
-    folder = "data/"
-    FILE_NUM = 49 # 选择要处理的文件编号
-    fits_file_names = file_utils.get_fits_file_names(folder)
 
-    img_data, hdr = file_utils.read_image_data(folder + fits_file_names[FILE_NUM])
+    paths = file_utils.get_fits_file_paths('data/')
+
+    FILE_NUM = 49  # 选择要处理的文件编号
+    img_data, hdr = file_utils.read_image_data(paths[FILE_NUM])  # 选择第50张图像
 
     clip_image_fixed, clip_image_percentile, clip_image_statistics = file_utils.clip_image_data(img_data)
 
@@ -29,13 +27,21 @@ if __name__ == '__main__':
     source2 = find_star(clip_image_percentile)
     source3 = find_star(clip_image_statistics)
 
+    # 过滤 sharpness 太低 或 roundness1 太大的星点
+    roundness_threshold = 0.5
+    sharpness_threshold = 0.3
+    source0 = source0[(source0['sharpness'] > sharpness_threshold) & (np.abs(source0['roundness1']) < roundness_threshold)]
+    source1 = source1[(source1['sharpness'] > sharpness_threshold) & (np.abs(source1['roundness1']) < roundness_threshold)]
+    source2 = source2[(source2['sharpness'] > sharpness_threshold) & (np.abs(source2['roundness1']) < roundness_threshold)]
+    source3 = source3[(source3['sharpness'] > sharpness_threshold) & (np.abs(source3['roundness1']) < roundness_threshold)]
+
     # 将 header 保存到json文件
-    with open('result/light_curves/header.json', 'w') as f:
+    with open(f'result/find_star/header_{FILE_NUM}.json', 'w') as f:
         json.dump(dict(hdr), f, indent=4)
 
-    # np.save('result/find_star/source_fixed.npy', source1)
-    # np.save('result/find_star/source_percentile.npy', source2)
-    # np.save('result/find_star/source_statistics.npy', source3)
+    np.save('result/find_star/source_fixed.npy', source1)
+    np.save('result/find_star/source_percentile.npy', source2)
+    np.save('result/find_star/source_statistics.npy', source3)
 
     print(f'原始图像找到 {len(source0)} 个星点')
     print(f'固定值裁剪找到 {len(source1)} 个星点')
