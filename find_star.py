@@ -58,17 +58,17 @@ if __name__ == '__main__':
     # 在图像中圈出前10个星点
     import matplotlib.pyplot as plt
     plt.figure(figsize=(12, 6))
-    plt.subplot(2, 2, 1)
-    plt.imshow(img_data, origin='lower')
-    plt.scatter(top_flux_origin['xcentroid'],
-                top_flux_origin['ycentroid'],
-                s=top_flux_origin['npix'],
-                edgecolor='red',
-                facecolor='none',
-                label=f'Top {TOP} Flux')
-    plt.title('Original Image Stars')
-    plt.legend()
-    plt.subplot(2, 2, 2)
+    # plt.subplot(2, 2, 1)
+    # plt.imshow(img_data, origin='lower')
+    # plt.scatter(top_flux_origin['xcentroid'],
+    #             top_flux_origin['ycentroid'],
+    #             s=top_flux_origin['npix'],
+    #             edgecolor='red',
+    #             facecolor='none',
+    #             label=f'Top {TOP} Flux')
+    # plt.title('Original Image Stars')
+    # plt.legend()
+    # plt.subplot(2, 2, 2)
     plt.imshow(clip_image_fixed, origin='lower')
     plt.scatter(top_flux_fixed['xcentroid'],
                 top_flux_fixed['ycentroid'],
@@ -78,26 +78,26 @@ if __name__ == '__main__':
                 label=f'Top {TOP} Flux')
     plt.title('Fixed Clipping Stars')
     plt.legend()
-    plt.subplot(2, 2, 3)
-    plt.imshow(clip_image_percentile, origin='lower')
-    plt.scatter(top_flux_percentile['xcentroid'],
-                top_flux_percentile['ycentroid'],
-                s=top_flux_percentile['npix'],
-                edgecolor='red',
-                facecolor='none',
-                label=f'Top {TOP} Flux')
-    plt.title('Percentile Clipping Stars')
-    plt.legend()
-    plt.subplot(2, 2, 4)
-    plt.imshow(clip_image_statistics, origin='lower')
-    plt.scatter(top_flux_statistics['xcentroid'],
-                top_flux_statistics['ycentroid'],
-                s=top_flux_statistics['npix'],
-                edgecolor='red',
-                facecolor='none',
-                label=f'Top {TOP} Flux')
-    plt.title('Statistics Clipping Stars')
-    plt.legend()
-    plt.tight_layout() # 自动调整子图间距
+    # plt.subplot(2, 2, 3)
+    # plt.imshow(clip_image_percentile, origin='lower')
+    # plt.scatter(top_flux_percentile['xcentroid'],
+    #             top_flux_percentile['ycentroid'],
+    #             s=top_flux_percentile['npix'],
+    #             edgecolor='red',
+    #             facecolor='none',
+    #             label=f'Top {TOP} Flux')
+    # plt.title('Percentile Clipping Stars')
+    # plt.legend()
+    # plt.subplot(2, 2, 4)
+    # plt.imshow(clip_image_statistics, origin='lower')
+    # plt.scatter(top_flux_statistics['xcentroid'],
+    #             top_flux_statistics['ycentroid'],
+    #             s=top_flux_statistics['npix'],
+    #             edgecolor='red',
+    #             facecolor='none',
+    #             label=f'Top {TOP} Flux')
+    # plt.title('Statistics Clipping Stars')
+    # plt.legend()
+    # plt.tight_layout() # 自动调整子图间距
     plt.show()
 
